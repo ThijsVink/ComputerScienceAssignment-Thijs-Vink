@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 
 
 # All functions
-# Stuff for final loop:
 
 # create bootstrap of cleaned data where train set is an random subset of the data of size 63%
 def bootstrap(data, percentage):
@@ -103,7 +102,6 @@ def title_clean(data):
 
     return newdata
 
-    # make all title values lowercase
 
 
 # from each title subkey extract the words and return list of words
@@ -179,7 +177,6 @@ def get_model_words_title_single(data, entry):
         model_words.append(word[0])
     model_words = list(dict.fromkeys(model_words))
 
-    # remove duplicates
     return model_words
 
 def get_model_words_features(data, keys):
@@ -215,8 +212,6 @@ def binarymatrix(data, model_words_title, model_words_KVPAIRS, model_words_pound
     matrix = np.zeros((len(model_words), len(data)), dtype=int)
 
     # if title contains a modelwordtitle then the corresponding entry in the matrix is 1,
-    # if a value from the keys in the features map contains a modelwordKVPAIRS or modelwordtitle,
-    # then the corresponding entry in the matrix is 1
     i = 0
     for key, value in data.items():
         for word in model_words_title:
@@ -236,7 +231,6 @@ def hashfunction(a, b, p, row_index):
 
 
 # create signature matrix with hashfunction k is number of hashfunctions and n is number of columns (Tv's)
-
 def signaturematrix(matrix, k):
     n_rows, n_columns = matrix.shape
     signature_matrix = np.full((k, n_columns), np.inf)
@@ -267,8 +261,6 @@ def signaturematrix(matrix, k):
 
 
 
-# def custom_hash(band):
-#     return ''.join(map(str, band))
 
 # create LSH method
 def apply_lsh(signature_matrix, num_bands, band_size, lshdata):
@@ -343,7 +335,7 @@ def find_true_pairs(data):
     return true_pairs
 
 
-# find precision recall and F1 score from the candidate pairs where a true pair is with same modelID and false pair
+# find scoring metrics from the candidate pairs where a true pair is with same modelID and false pair
 # is with different modelID
 def scores(candidate_pairs, true_pairs, lsh):
     candidate_pairs = set(candidate_pairs)
@@ -372,7 +364,6 @@ def scores(candidate_pairs, true_pairs, lsh):
         F1 = 2 * (precision * recall) / (precision + recall) if (precision + recall) != 0 else 0
         return precision, recall, F1
 
-# for a range b's where b*r = k, apply lsh and find scores for each b and r
 def final_scores(signature_matrix, alldistances, true_pairs, data, threshold, b,r,lsh,clustering):
     n_hashes, n_columns = signature_matrix.shape
     PC_lsh = 0
@@ -445,7 +436,6 @@ def filter_distance_matrix(distance_matrix, pairs_to_keep):
     return new_matrix
 
 
-#define distance matrix where only the entries corresponding to the
 
 #apply agglomerative clustering on the distance matrix and return clusters
 def MSMclustering(filter_distance_matrix, threshold):
@@ -481,10 +471,6 @@ def find_duplicates(clustering_result):
 
 
 
-
-#############################################################################################################
-# visualization functions
-# plot the scores against the fraction of comparisons #entry 1 is PC, entry 2 is PQ, entry 3 is F1_star
 
 def average_bootstrapped_scores(bootstrapped_scores):
     # Initialize the result dictionary
@@ -535,6 +521,9 @@ def plot_average_scores(averaged_scores, entry, set):
     plt.legend()
     plt.show()
 
+
+#############################################################################################################
+# visualization functions
 
 def bootstrapper2( bootstrappeddata, clustering_thresholds, n_hashes, alldistances):
 
